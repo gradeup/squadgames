@@ -118,7 +118,9 @@ fun Submit(i: Intent) {
 fun HintBox(hint: String, modifier: Modifier) {
     Column() {
         Box(modifier = Modifier
-            .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;  }){
+            .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;
+                resultsIntent.putExtra("score", totalScore.value)
+            }){
             if(showHint.value) {
                 Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
@@ -201,7 +203,7 @@ fun SingleChoiceIconQuestion(
             Color(0xFFc468da)
         )
     ))
-    val correctAnswerPlayer = MediaPlayer.create(context, R.raw.rightanswer)
+    val correctAnswerPlayer = MediaPlayer.create(context, R.raw.correctanswer)
     val wrongAnswerPlayer = MediaPlayer.create(context, R.raw.wronganswer)
 
     Row(
@@ -214,6 +216,7 @@ fun SingleChoiceIconQuestion(
                 if (selectOption == correctOption) {
                     correctAnswerPlayer.start()
                     totalScore.value = totalScore.value + 10
+                    resultsIntent.putExtra("score", totalScore.value)
                     color.value = Brush.horizontalGradient(
                         listOf(
                             Color.Green,
