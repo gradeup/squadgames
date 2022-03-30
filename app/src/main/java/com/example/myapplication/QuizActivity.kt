@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,7 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.*
 import java.util.Collections.shuffle
+import kotlin.collections.ArrayList
 
 
 class QuizActivity : ComponentActivity() {
@@ -57,7 +60,7 @@ class QuizActivity : ComponentActivity() {
                 .fillMaxSize(1f)) {
                 Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
                 QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
-                Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "${totalScore.value}")
+                //Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "${totalScore.value}")
                 resultsIntent.putExtra("score", totalScore.value)
         }
     }
@@ -96,6 +99,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
                 SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id, resultsIntent = resultsIntent, questionsLength = questionsLength)
             }
         }
+        ScoreCard(resultsIntent)
     }
 }
 
@@ -131,6 +135,12 @@ fun HintBox(hint: String, modifier: Modifier) {
         }
     }
 
+}
+
+@Composable
+fun ScoreCard(resultsIntent: Intent) {
+    Text(text = "Current Score    ", color= Color.White, fontSize = 20.sp,fontWeight = FontWeight.W700)
+    Text(text = totalScore.value.toString(), color= Color.White, fontSize = 20.sp,fontWeight = FontWeight.W700)
 }
 
 
@@ -200,6 +210,7 @@ fun SingleChoiceIconQuestion(
             .clickable {
 
                 selectOption = optionId
+                selectedAnswer.value = optionId
                 if (selectOption == correctOption) {
                     correctAnswerPlayer.start()
                     totalScore.value = totalScore.value + 10
@@ -208,7 +219,8 @@ fun SingleChoiceIconQuestion(
                             Color.Green,
                             Color.DarkGray,
                             Color.LightGray
-                        ))
+                        )
+                    )
                     Toast
                         .makeText(
                             context,
@@ -237,14 +249,20 @@ fun SingleChoiceIconQuestion(
 //                } else {
 //                    showQuestion.value = showQuestion.value+1; showHint.value = false }
                 else {
-                    showQuestion.value = showQuestion.value + 1;
-                    showHint.value = false
+                    Handler().postDelayed({
+                        showQuestion.value = showQuestion.value + 1;
+                        showHint.value = false
+                        selectedAnswer.value = 0
+                    }, 2000)
+
+
                 }
 
             }
 
 
-            .background( color.value,
+            .background(
+                color.value,
 //                Brush.horizontalGradient(
 //                    listOf(
 //                        Color(0xFFa54776),
@@ -272,7 +290,12 @@ fun SingleChoiceIconQuestion(
                 .clip(CircleShape),
         )
         Text(text = option, textAlign = TextAlign.Center, modifier = Modifier.padding(end = 150.dp), style=TextStyle(color= Color.White, fontSize = 18.sp, fontWeight = FontWeight.W700))
-
+        if (selectedAnswer.value == correctOption && selectedAnswer.value == optionId) {
+            Text(text = "Wohoo", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
+        }
+        if (selectedAnswer.value != correctOption && selectedAnswer.value == optionId) {
+            Text(text = "Mehh", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
+        }
     }
 
 
@@ -281,6 +304,7 @@ fun SingleChoiceIconQuestion(
 private val showQuestion = mutableStateOf(0)
 private val showHint = mutableStateOf(false)
 private val totalScore = mutableStateOf(0)
+private val selectedAnswer = mutableStateOf(0)
 
 data class Option(
     val id: Int,
