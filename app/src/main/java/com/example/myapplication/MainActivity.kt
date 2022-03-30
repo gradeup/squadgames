@@ -34,17 +34,19 @@ class MainActivity : ComponentActivity() {
 
                 // A surface container using the 'background' color from the theme
 
-            Snackbar {
 
+            Snackbar {
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     scaffoldState= scaffoldState
                 ) {
+
                     Column(horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center, modifier = Modifier
                             .fillMaxSize()
                             .background(Color(0xFF353a65)),
                     ) {
-                        Loader()
+                        Loader();
+
                         Spacer(modifier = Modifier.height(50.dp))
                         TextField(value = textFieldState ,
                             label = {
@@ -74,8 +76,7 @@ class MainActivity : ComponentActivity() {
                             .height(50.dp)
                             .width(270.dp)
                             .clickable {
-                                if(textFieldState=="")
-                                {
+                                if (textFieldState == "") {
                                     Toast
                                         .makeText(
                                             context,
@@ -83,13 +84,14 @@ class MainActivity : ComponentActivity() {
                                             Toast.LENGTH_SHORT
                                         )
                                         .show();
-                                }
-                                else{
+                                } else {
                                     context.startActivity(
                                         Intent(context, QuizActivity::class.java)
                                     )
                                 }
+
                             }
+
                         ){
                             Text("Start My Quiz", Modifier
                                 .align(Alignment.Center),
@@ -132,4 +134,3 @@ private fun Loader(){
             .width(270.dp)
     )
 }
-

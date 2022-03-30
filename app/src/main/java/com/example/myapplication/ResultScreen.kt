@@ -1,5 +1,4 @@
 package com.example.myapplication
-
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +10,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -34,8 +30,8 @@ class ResultScreen : ComponentActivity() {
         setContent {
             Column() {
                 score = intent.getIntExtra("score", 0)
-                val context = LocalContext.current
-                val activity = (LocalContext.current as? Activity)
+//                val context = LocalContext.current
+//                val activity = (LocalContext.current as? Activity)
                 Column(horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
@@ -50,58 +46,9 @@ class ResultScreen : ComponentActivity() {
                         Loader("lottie/trophy.json")
                     }
                     Spacer(modifier = Modifier.height(40.dp))
-                    if(score==50)
-                    {
-                        Text("Congrats!! You won",
-                            color = Color.White,
-                            fontSize = 20.sp)
-                        Text("You scored $score",
-                            color = Color.White,
-                            fontSize = 15.sp)
-                    }
-                    else if(score>20){
-                        Text("Good!! keep trying",
-                            color = Color.White,
-                            fontSize = 25.sp)
-                        Text("You scored $score",
-                            color = Color.White,
-                            fontSize = 15.sp)
-                    }
-                    else{
-                        Text("Bad!! keep trying",
-                            color = Color.White,
-                            fontSize = 25.sp)
-                        Text("You scored $score",
-                            color = Color.White,
-                            fontSize = 15.sp)
-                    }
+                    showResult(score)
                     Spacer(modifier = Modifier.height(40.dp))
-                    Box(modifier = Modifier
-                        .background(
-                            Brush.horizontalGradient(
-                                listOf(
-                                    Color(0xFFa54776),
-                                    Color(0xFFd45dad),
-                                    Color(0xFFc468da)
-                                )
-                            ), shape = RoundedCornerShape(50)
-                        )
-                        //.background(Color(0xFFea4c89), shape = RoundedCornerShape(50))
-                        .height(60.dp)
-                        .width(300.dp)
-                        .clickable {
-                            context.startActivity(
-                                Intent(context, MainActivity::class.java)
-                            )
-                            activity?.finish()
-                        }
-                    ){
-                        Text("Play Again", Modifier
-                            .align(Alignment.Center),
-                            color = Color.White,
-                            fontSize = 25.sp,
-                        )
-                    }
+                    playAgain()
 
                 }
             }
@@ -125,5 +72,65 @@ private fun Loader(my_file:String){
             .width(270.dp)
     )
 }
+@Composable
+private fun showResult(user_score:Int){
+    if(user_score==50)
+    {
+        Text("Congrats!! You won",
+            color = Color.White,
+            fontSize = 20.sp)
+        Text("You scored $user_score",
+            color = Color.White,
+            fontSize = 15.sp)
+    }
+    else if(user_score>20){
+        Text("Good!! keep trying",
+            color = Color.White,
+            fontSize = 25.sp)
+        Text("You scored $user_score",
+            color = Color.White,
+            fontSize = 15.sp)
+    }
+    else{
+        Text("Bad!! keep trying",
+            color = Color.White,
+            fontSize = 25.sp)
+        Text("You scored $user_score",
+            color = Color.White,
+            fontSize = 15.sp)
+    }
+}
+@Composable
+private fun playAgain(){
+    val context = LocalContext.current
+    val activity = (LocalContext.current as? Activity)
+    Box(modifier = Modifier
+        .background(
+            Brush.horizontalGradient(
+                listOf(
+                    Color(0xFFa54776),
+                    Color(0xFFd45dad),
+                    Color(0xFFc468da)
+                )
+            ), shape = RoundedCornerShape(50)
+        )
+        //.background(Color(0xFFea4c89), shape = RoundedCornerShape(50))
+        .height(60.dp)
+        .width(300.dp)
+        .clickable {
+            context.startActivity(
+                Intent(context, MainActivity::class.java)
+            )
+            activity?.finish()
+        }
+    ){
+        Text("Play Again", Modifier
+            .align(Alignment.Center),
+            color = Color.White,
+            fontSize = 25.sp,
+        )
+    }
+}
+
 
 
