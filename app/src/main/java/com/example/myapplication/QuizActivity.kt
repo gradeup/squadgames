@@ -244,6 +244,7 @@ fun SingleChoiceIconQuestion(
                     context.startActivity(resultsIntent)
                     activity?.finish()
                     showQuestion.value = 0
+                    selectedAnswer.value = 0
 
                 }
 //                } else {
@@ -355,12 +356,12 @@ private val quizQuestions = listOf(
         questionHint = "Piyush",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U010026KRK6-8e13318c2565-192",
         questionImageUrl = R.drawable.piyush,
-        answer = 2,
+        answer = 1,
         options = listOf(
             Option(
                 id = 1,
-                optionText = "Ozone",
-                optionImageUrl = R.drawable.ozone,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
             ),
             Option(
                 id = 2,
@@ -369,13 +370,13 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 3,
-                optionText = "Nucleus",
-                optionImageUrl = R.drawable.nucleus,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
             ),
             Option(
                 id = 4,
-                optionText = "Quantum",
-                optionImageUrl = R.drawable.quantum,
+                optionText = "Nucleus",
+                optionImageUrl = R.drawable.nucleus,
             ),
         )
     ),
@@ -388,8 +389,8 @@ private val quizQuestions = listOf(
         options = listOf(
             Option(
                 id = 1,
-                optionText = "Ozone",
-                optionImageUrl = R.drawable.ozone,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
             ),
             Option(
                 id = 2,
@@ -398,13 +399,13 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 3,
-                optionText = "Nucleus",
-                optionImageUrl = R.drawable.nucleus,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
             ),
             Option(
                 id = 4,
-                optionText = "Quantum",
-                optionImageUrl = R.drawable.quantum,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
             ),
         )
     ),
@@ -413,7 +414,7 @@ private val quizQuestions = listOf(
         questionHint = "Gunjit",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U0102MQ3X9C-3c019c024a3f-192",
         questionImageUrl = R.drawable.gunjit,
-        answer = 2,
+        answer = 4,
         options = listOf(
             Option(
                 id = 1,
@@ -432,8 +433,8 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 4,
-                optionText = "Quantum",
-                optionImageUrl = R.drawable.quantum,
+                optionText = "Sigma",
+                optionImageUrl = R.drawable.sigma,
             ),
         )
     ),
@@ -442,27 +443,27 @@ private val quizQuestions = listOf(
         questionHint = "Unnati",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-UVDV3AYJY-f78c2d308997-192",
         questionImageUrl = R.drawable.unnati,
-        answer = 2,
+        answer = 1,
         options = listOf(
             Option(
                 id = 1,
-                optionText = "Ozone",
-                optionImageUrl = R.drawable.ozone,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
             ),
             Option(
                 id = 2,
-                optionText = "Photon",
-                optionImageUrl = R.drawable.photonl,
-            ),
-            Option(
-                id = 3,
                 optionText = "Nucleus",
                 optionImageUrl = R.drawable.nucleus,
             ),
             Option(
-                id = 4,
+                id = 3,
                 optionText = "Quantum",
                 optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 4,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
             ),
         )
     ),
@@ -471,7 +472,7 @@ private val quizQuestions = listOf(
         questionHint = "Abhilash",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U02L9T65A8N-a1f617e965be-192",
         questionImageUrl = R.drawable.abhilash,
-        answer = 2,
+        answer = 3,
         options = listOf(
             Option(
                 id = 1,
@@ -485,8 +486,8 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 3,
-                optionText = "Nucleus",
-                optionImageUrl = R.drawable.nucleus,
+                optionText = "Delta",
+                optionImageUrl = R.drawable.delta,
             ),
             Option(
                 id = 4,
