@@ -42,13 +42,38 @@ class ResultScreen : ComponentActivity() {
                         .fillMaxSize()
                         .background(Color(0xFF353a65)),
                 ) {
-                    Text("$score")
                     Box(modifier = Modifier
                         .background(Color.White, shape = CircleShape)
                         .height(200.dp)
                         .width(200.dp)
                     ){
                         Loader("lottie/trophy.json")
+                    }
+                    Spacer(modifier = Modifier.height(40.dp))
+                    if(score==50)
+                    {
+                        Text("Congrats!! You won",
+                            color = Color.White,
+                            fontSize = 20.sp)
+                        Text("You scored $score",
+                            color = Color.White,
+                            fontSize = 15.sp)
+                    }
+                    else if(score>20){
+                        Text("Good!! keep trying",
+                            color = Color.White,
+                            fontSize = 25.sp)
+                        Text("You scored $score",
+                            color = Color.White,
+                            fontSize = 15.sp)
+                    }
+                    else{
+                        Text("Bad!! keep trying",
+                            color = Color.White,
+                            fontSize = 25.sp)
+                        Text("You scored $score",
+                            color = Color.White,
+                            fontSize = 15.sp)
                     }
                     Spacer(modifier = Modifier.height(40.dp))
                     Box(modifier = Modifier
