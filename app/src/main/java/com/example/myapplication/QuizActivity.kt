@@ -84,6 +84,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
         val painter = painterResource(id = ques.questionImageUrl)
         val description = "Android logo"
         val title = "Android"
+        val correctOption = ques.answer
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -106,7 +107,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText)
+                SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id)
             }
         }
         if (showQuestion.value >= questionsLength-1) {
@@ -156,18 +157,15 @@ fun HintBox(hint: String, modifier: Modifier) {
             if(showHint.value) {
                 Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
-                    .padding(top = 25.dp)
-                    .width(190.dp)
-                    .background(Color.Magenta))
+                    .width(190.dp))
+            } else {
+                Text(text = "Hint",color=Color.White,textAlign = TextAlign.Center, fontSize = 17.sp, fontWeight = FontWeight.W500, modifier = Modifier
+                    .align(alignment = Alignment.Center)
+                    .width(200.dp)
+                    .padding(bottom = 20.dp)
+                    .padding(5.dp)
+                    .padding(start = 5.dp, end = 5.dp))
             }
-            Spacer(modifier = Modifier.height(10.dp).background(Color(0xFF353a65)))
-            Text(text = "Hint",color=Color.White,textAlign = TextAlign.Center, fontSize = 17.sp, fontWeight = FontWeight.W500, modifier = Modifier
-                .align(alignment = Alignment.Center)
-                .width(200.dp)
-                .padding(bottom = 20.dp)
-                .padding(5.dp)
-                .background(Color.Magenta)
-                .padding(start = 5.dp, end = 5.dp))
 
         }
     }
@@ -189,8 +187,9 @@ fun ImageCard(
         elevation =  5.dp
     ) {
         Box(modifier = Modifier.height(200.dp)) {
-            Image(painter = painter, contentDescription = contentDescription, contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(1f).clip(CircleShape))
+            Image(painter = painter, contentDescription = contentDescription,
+                 contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth(1f).background(color = Color.White, shape = CircleShape))
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -209,9 +208,12 @@ fun ImageCard(
 @Composable
 fun SingleChoiceIconQuestion(
     painter: Painter,
-    option: String
+    option: String,
+    optionId: Int,
+    correctOption: Int,
 ) {
     val context = LocalContext.current
+    var selectOption = 0
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -223,13 +225,25 @@ fun SingleChoiceIconQuestion(
             RoundedCornerShape(50.dp))
 //
             .clickable {
-                Toast
-                    .makeText(
-                        context,
-                        "Showing Toast",
-                        Toast.LENGTH_SHORT
-                    )
-                    .show()
+
+                selectOption = optionId
+                if(selectOption == correctOption){
+                    Toast
+                        .makeText(
+                            context,
+                            "Correct Answer",
+                            Toast.LENGTH_SHORT
+                        )
+                        .show();
+                } else {
+                    Toast
+                        .makeText(
+                            context,
+                            "Wrong Answer",
+                            Toast.LENGTH_SHORT
+                        )
+                        .show();
+                }
             }
             .padding(vertical = 16.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -241,7 +255,9 @@ fun SingleChoiceIconQuestion(
             contentDescription = null,
             modifier = Modifier
                 .width(56.dp)
-                .height(56.dp),
+                .height(56.dp)
+                .background(color = Color.Transparent, shape = CircleShape)
+                .clip(CircleShape),
         )
         Text(text = option, style=TextStyle(color= Color.White, fontSize = 16.sp))
 
