@@ -44,6 +44,8 @@ import android.widget.Toast
 import androidx.compose.material.RadioButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import kotlin.random.Random
 
 class QuizActivity : ComponentActivity() {
@@ -60,10 +62,10 @@ class QuizActivity : ComponentActivity() {
             resultsIntent.putExtra("score", 4)
 
             Column(horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center) {
-                Text(modifier = Modifier.padding(10.dp), text = "Guess the squad")
-                QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent)
-            }
+                verticalArrangement = Arrangement.Center,
+            modifier = Modifier.background(Color(0xFF353a65)).fillMaxSize(1f)) {
+                Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
+                QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
         }
     }
 }
@@ -74,7 +76,6 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
             verticalArrangement = Arrangement.Center) {
         val context = LocalContext.current
         val activity = (LocalContext.current as? Activity)
-        //Text(text="Hint ${ques.questionHint}!")
         val painter = painterResource(id = ques.questionImageUrl)
         val description = "Android logo"
         val title = "Android"
@@ -82,7 +83,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .padding(start = 135.dp)
+                .padding(start = 125.dp)
         ) {
             ImageCard(painter = painter, contentDescription = description, title = title)
         }
@@ -152,10 +153,13 @@ fun HintBox(hint: String, modifier: Modifier) {
                     .align(alignment = Alignment.Center)
                     .padding(bottom = 20.dp))
             }
-            RoundedCornerShape(20.dp)
-            if(showHint.value){
-                Text(text=hint, modifier = Modifier.padding(top = 20.dp))
-            }
+            Text(text = "Hint",color=Color.White, fontSize = 16.sp, fontWeight = FontWeight.W400, modifier = Modifier
+                .align(alignment = Alignment.Center)
+                .padding(bottom = 20.dp)
+                .padding(5.dp)
+                .background(Color.Magenta)
+                .padding(start = 5.dp, end = 5.dp))
+
         }
     }
 
@@ -170,8 +174,8 @@ fun ImageCard(
 ) {
     Card (
         modifier = Modifier
-            .width(100.dp)
-            .height(100.dp),
+            .width(150.dp)
+            .height(150.dp),
         shape = RoundedCornerShape(100.dp),
         elevation =  5.dp
     ) {
