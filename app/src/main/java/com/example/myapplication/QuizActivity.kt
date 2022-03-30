@@ -6,7 +6,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -15,7 +14,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -41,110 +39,101 @@ class QuizActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val resultsIntent = Intent(this, ResultScreen::class.java)
-        var questionsList = quizQuestions.toMutableList()
         shuffle(quizQuestions)
-        var questionsToShow = ArrayList<Question>()
+        val questionsToShow = ArrayList<Question>()
         for (i in quizQuestions.take(5)) {
-            questionsToShow.add(i);
+            questionsToShow.add(i)
         }
 
         setContent {
-
-
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color(0xFF353a65))
-                .fillMaxSize(1f)) {
-                Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
-                QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
-                //Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "${totalScore.value}")
-                resultsIntent.putExtra("score", totalScore.value)
+                modifier = Modifier
+                    .background(Color(0xFF353a65))
+                    .fillMaxSize(1f)) {
+                        Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
+                        QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
+                        resultsIntent.putExtra("score", totalScore.value)
+            }
         }
     }
-}
 
 @Composable
 fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) {
     Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-        val painter = painterResource(id = ques.questionImageUrl)
-        val description = "Android logo"
-        val title = "Android"
-        val correctOption = ques.answer
-        if (showQuestion.value == 0) {
-            totalScore.value = 0
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .padding(start = 125.dp)
-        ) {
-            ImageCard(painter = painter, contentDescription = description, title = title)
-        }
-        HintBox(
-            ques.questionHint,
-            resultsIntent,
-            modifier = Modifier
-                .height(200.dp)
-                .width(200.dp)
-        )
-        //var x = 0;
-        for(i in ques.options) {
-            val optionPainter = painterResource(id = i.optionImageUrl)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id, resultsIntent = resultsIntent, questionsLength = questionsLength)
-            }
-        }
-        ScoreCard(resultsIntent)
-    }
-}
-
-@Composable
-fun Submit(i: Intent) {
-    val context = LocalContext.current
-
-    Button(onClick = { context.startActivity(i)
-    }) {
-        Text(text = "View Score")
+                val painter = painterResource(id = ques.questionImageUrl)
+                val description = "Android logo"
+                val correctOption = ques.answer
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .padding(start = 125.dp)
+                ) {
+                    ImageCard(painter = painter, contentDescription = description)
+                }
+                HintBox(
+                    ques.questionHint,
+                )
+                for(i in ques.options) {
+                        val optionPainter = painterResource(id = i.optionImageUrl)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                            ) {
+                                SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id, resultsIntent = resultsIntent, questionsLength = questionsLength)
+                        }
+                }
+            ScoreCard()
     }
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun HintBox(hint: String,resultsIntent: Intent, modifier: Modifier) {
+fun HintBox(hint: String,) {
     Column() {
         Box(modifier = Modifier
-            .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;
-                resultsIntent.putExtra("score", totalScore.value)
+                .clickable { showHint.value = !showHint.value
+                    if(showHint.value) {
+                        totalScore.value = totalScore.value - 5
+                    }
             }){
-            if(showHint.value) {
-                Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
-                    .align(alignment = Alignment.Center)
-                    .width(190.dp))
-            } else {
-                Text(text = "Hint",color=Color.White,textAlign = TextAlign.Center, fontSize = 17.sp, fontWeight = FontWeight.W500, modifier = Modifier
-                    .align(alignment = Alignment.Center)
-                    .width(190.dp))
-//                    .padding(bottom = 20.dp)
-//                    .padding(5.dp)
-//                    .padding(start = 5.dp, end = 5.dp))
-            }
+                if(showHint.value) {
+                    Text(text = hint,color=Color.White,
+                        textAlign = TextAlign.Center,
+                        fontSize=17.sp,
+                        fontWeight = FontWeight.W500,
+                        modifier = Modifier
+                        .align(alignment = Alignment.Center)
+                        .width(190.dp))
+                } else {
+                    Text(text = "Hint",
+                        color=Color.White,
+                        textAlign = TextAlign.Center,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.W500,
+                        modifier = Modifier
+                        .align(alignment = Alignment.Center)
+                        .width(190.dp))
+                }
 
+            }
         }
+
     }
 
-}
-
 @Composable
-fun ScoreCard(resultsIntent: Intent) {
-    Text(text = "Current Score    ", color= Color.White, fontSize = 20.sp,fontWeight = FontWeight.W700)
-    Text(text = totalScore.value.toString(), color= Color.White, fontSize = 20.sp,fontWeight = FontWeight.W700)
+fun ScoreCard() {
+    Text(text = "Current Score    ",
+        color= Color.White,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.W700)
+    Text(text = totalScore.value.toString(),
+        color= Color.White,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.W700)
 }
 
 
@@ -153,8 +142,6 @@ fun ScoreCard(resultsIntent: Intent) {
 fun ImageCard(
     painter: Painter,
     contentDescription: String,
-    title: String,
-    modifier: Modifier = Modifier
 ) {
     Card (
         modifier = Modifier
@@ -164,8 +151,9 @@ fun ImageCard(
         elevation =  5.dp
     ) {
         Box(modifier = Modifier.height(200.dp)) {
-            Image(painter = painter, contentDescription = contentDescription,
-                 contentScale = ContentScale.Crop,
+            Image(painter = painter,
+                contentDescription = contentDescription,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth(1f)
                     .background(color = Color.White, shape = CircleShape))
@@ -179,11 +167,13 @@ fun ImageCard(
                         ),
                         startY = 300f
                     )
-                ))
+                )
+            )
 
         }
     }
 }
+
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun SingleChoiceIconQuestion(
@@ -195,16 +185,8 @@ fun SingleChoiceIconQuestion(
     questionsLength: Int,
 ) {
     val context = LocalContext.current
-    var selectOption = 0
+    var selectOption: Int
     val activity = (LocalContext.current as? Activity)
-    val color = mutableStateOf(
-        Brush.horizontalGradient(
-        listOf(
-            Color(0xFFa54776),
-            Color(0xFFd45dad),
-            Color(0xFFc468da)
-        )
-    ))
     val correctAnswerPlayer = MediaPlayer.create(context, R.raw.correctanswer)
     val wrongAnswerPlayer = MediaPlayer.create(context, R.raw.wronganswer)
 
@@ -212,105 +194,87 @@ fun SingleChoiceIconQuestion(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-
                 selectOption = optionId
                 selectedAnswer.value = optionId
                 if (selectOption == correctOption) {
                     correctAnswerPlayer.start()
                     totalScore.value = totalScore.value + 10
                     resultsIntent.putExtra("score", totalScore.value)
-                    color.value = Brush.horizontalGradient(
-                        listOf(
-                            Color.Green,
-                            Color.DarkGray,
-                            Color.LightGray
-                        )
-                    )
-                    Toast
-                        .makeText(
-                            context,
-                            "Correct Answer",
-                            Toast.LENGTH_SHORT
-                        )
-                        .show();
                 } else {
                     wrongAnswerPlayer.start()
-                    Toast
-                        .makeText(
-                            context,
-                            "Wrong Answer",
-                            Toast.LENGTH_SHORT
-                        )
-                        .show();
                 }
                 if (showQuestion.value >= questionsLength - 1) {
-
-
                     context.startActivity(resultsIntent)
                     activity?.finish()
                     showQuestion.value = 0
                     selectedAnswer.value = 0
+                    totalScore.value = 0
 
                 }
-//                } else {
-//                    showQuestion.value = showQuestion.value+1; showHint.value = false }
                 else {
                     Handler().postDelayed({
-                        showQuestion.value = showQuestion.value + 1;
+                        showQuestion.value = showQuestion.value + 1
                         showHint.value = false
                         selectedAnswer.value = 0
                     }, 2000)
-
-
                 }
 
             }
-
-
             .background(
-                color.value,
-//                Brush.horizontalGradient(
-//                    listOf(
-//                        Color(0xFFa54776),
-//                        Color(0xFFd45dad),
-//                        Color(0xFFc468da)
-//                    )
-//                ),
-
+                Brush.horizontalGradient(
+                    listOf(
+                        Color(0xFFa54776),
+                        Color(0xFFd45dad),
+                        Color(0xFFc468da)
+                    )
+                ),
                 RoundedCornerShape(50.dp)
             )
             .padding(vertical = 16.dp, horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Image(
             painter = painter,
             contentDescription = null,
             modifier = Modifier
                 .width(56.dp)
                 .height(56.dp)
-//                .padding(start=10.dp)
-                //.fillMaxHeight(1f)
                 .background(color = Color.Transparent, shape = CircleShape)
-                .clip(CircleShape),
+                .clip(CircleShape)
         )
-        Text(text = option, textAlign = TextAlign.Center, modifier = Modifier.padding(end = 150.dp), style=TextStyle(color= Color.White, fontSize = 18.sp, fontWeight = FontWeight.W700))
+        Text(text = option,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(end = 150.dp),
+            style=TextStyle(color= Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W700)
+        )
         if (selectedAnswer.value == correctOption && selectedAnswer.value == optionId) {
-            Text(text = "Wohoo", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
+            Text(text = "Wohoo",
+                color=Color.White,
+                fontWeight = FontWeight.W500,
+                modifier = Modifier
+                    .padding(end=15.dp)
+            )
         }
         if (selectedAnswer.value != correctOption && selectedAnswer.value == optionId) {
-            Text(text = "Mehh", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
+            Text(text = "Mehh",
+                color=Color.White,
+                fontWeight = FontWeight.W500,
+                modifier = Modifier
+                    .padding(end=15.dp)
+            )
         }
     }
-
-
 }
 
 private val showQuestion = mutableStateOf(0)
 private val showHint = mutableStateOf(false)
 private val totalScore = mutableStateOf(0)
 private val selectedAnswer = mutableStateOf(0)
+
 
 data class Option(
     val id: Int,
@@ -330,7 +294,6 @@ private val quizQuestions = listOf(
     Question(
         id = 1,
         questionHint = "Prashant",
-        //questionImageUrl =  "https://ca.slack-edge.com/T029Z234S-U0100FH3KA4-31f759f82b38-192",
         questionImageUrl = R.drawable.pc,
         answer = 2,
         options = listOf(
@@ -359,7 +322,6 @@ private val quizQuestions = listOf(
     Question(
         id = 2,
         questionHint = "Piyush",
-        //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U010026KRK6-8e13318c2565-192",
         questionImageUrl = R.drawable.piyush,
         answer = 1,
         options = listOf(
@@ -388,7 +350,6 @@ private val quizQuestions = listOf(
     Question(
         id = 3,
         questionHint = "Faheem",
-        //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U3F1490EP-0df8620cc5d9-192",
         questionImageUrl = R.drawable.faheem,
         answer = 2,
         options = listOf(
@@ -417,7 +378,6 @@ private val quizQuestions = listOf(
     Question(
         id = 4,
         questionHint = "Gunjit",
-        //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U0102MQ3X9C-3c019c024a3f-192",
         questionImageUrl = R.drawable.gunjit,
         answer = 4,
         options = listOf(
@@ -446,7 +406,6 @@ private val quizQuestions = listOf(
     Question(
         id = 5,
         questionHint = "Unnati",
-        //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-UVDV3AYJY-f78c2d308997-192",
         questionImageUrl = R.drawable.unnati,
         answer = 1,
         options = listOf(
@@ -475,7 +434,6 @@ private val quizQuestions = listOf(
     Question(
         id = 6,
         questionHint = "Abhilash",
-        //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U02L9T65A8N-a1f617e965be-192",
         questionImageUrl = R.drawable.abhilash,
         answer = 3,
         options = listOf(
