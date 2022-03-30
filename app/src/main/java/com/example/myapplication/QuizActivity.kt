@@ -123,7 +123,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
                 Text(text = "Submit")
             }
         } else {
-            Button(onClick = { showQuestion.value = showQuestion.value+1;  }) {
+            Button(onClick = { showQuestion.value = showQuestion.value+1; showHint.value = false }) {
                 Text(text = "Next")
             }
         }
@@ -144,16 +144,14 @@ fun Submit(i: Intent) {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun HintBox(hint: String, modifier: Modifier) {
-
-    val showHint = remember {
-        mutableStateOf(false)
-    }
     Column() {
         Box(modifier = Modifier
             .clickable { showHint.value = !showHint.value }){
-            Text(text = "Click me", modifier = Modifier
-                .align(alignment = Alignment.Center)
-                .padding(bottom = 20.dp))
+            if(!showHint.value) {
+                Text(text = "Show Hint", modifier = Modifier
+                    .align(alignment = Alignment.Center)
+                    .padding(bottom = 20.dp))
+            }
             RoundedCornerShape(20.dp)
             if(showHint.value){
                 Text(text=hint, modifier = Modifier.padding(top = 20.dp))
@@ -235,6 +233,7 @@ fun SingleChoiceIconQuestion(
 }
 
 private val showQuestion = mutableStateOf(0)
+private val showHint = mutableStateOf(false)
 
 data class Option(
     val id: Int,
