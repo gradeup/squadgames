@@ -131,6 +131,7 @@ fun HintBox(hint: String, modifier: Modifier) {
 }
 
 
+
 @Composable
 fun ImageCard(
     painter: Painter,
@@ -166,6 +167,7 @@ fun ImageCard(
         }
     }
 }
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun SingleChoiceIconQuestion(
     painter: Painter,
@@ -177,18 +179,31 @@ fun SingleChoiceIconQuestion(
 ) {
     val context = LocalContext.current
     var selectOption = 0
-    var disableoption = true
     val activity = (LocalContext.current as? Activity)
+    val color = mutableStateOf(
+        Brush.horizontalGradient(
+        listOf(
+            Color(0xFFa54776),
+            Color(0xFFd45dad),
+            Color(0xFFc468da)
+        )
+    ))
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-//            .height(70.dp)
             .clickable {
 
                 selectOption = optionId
                 if (selectOption == correctOption) {
+
                     totalScore.value = totalScore.value + 10
+                    color.value = Brush.horizontalGradient(
+                        listOf(
+                            Color.Green,
+                            Color.DarkGray,
+                            Color.LightGray
+                        ))
                     Toast
                         .makeText(
                             context,
@@ -223,14 +238,14 @@ fun SingleChoiceIconQuestion(
             }
 
 
-            .background(
-                Brush.horizontalGradient(
-                    listOf(
-                        Color(0xFFa54776),
-                        Color(0xFFd45dad),
-                        Color(0xFFc468da)
-                    )
-                ),
+            .background( color.value,
+//                Brush.horizontalGradient(
+//                    listOf(
+//                        Color(0xFFa54776),
+//                        Color(0xFFd45dad),
+//                        Color(0xFFc468da)
+//                    )
+//                ),
 
                 RoundedCornerShape(50.dp)
             )
@@ -245,11 +260,12 @@ fun SingleChoiceIconQuestion(
             modifier = Modifier
                 .width(56.dp)
                 .height(56.dp)
+//                .padding(start=10.dp)
                 //.fillMaxHeight(1f)
                 .background(color = Color.Transparent, shape = CircleShape)
                 .clip(CircleShape),
         )
-        Text(text = option, textAlign = TextAlign.Center, modifier = Modifier.padding(end = 150.dp), style=TextStyle(color= Color.White, fontSize = 16.sp))
+        Text(text = option, textAlign = TextAlign.Center, modifier = Modifier.padding(end = 150.dp), style=TextStyle(color= Color.White, fontSize = 18.sp, fontWeight = FontWeight.W700))
 
     }
 
