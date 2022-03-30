@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,7 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.*
 import java.util.Collections.shuffle
+import kotlin.collections.ArrayList
 
 
 class QuizActivity : ComponentActivity() {
@@ -57,7 +60,7 @@ class QuizActivity : ComponentActivity() {
                 .fillMaxSize(1f)) {
                 Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
                 QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
-                Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "${totalScore.value}")
+                //Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "${totalScore.value}")
                 resultsIntent.putExtra("score", totalScore.value)
         }
     }
@@ -96,6 +99,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
                 SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id, resultsIntent = resultsIntent, questionsLength = questionsLength)
             }
         }
+        ScoreCard(resultsIntent)
     }
 }
 
@@ -114,7 +118,9 @@ fun Submit(i: Intent) {
 fun HintBox(hint: String, modifier: Modifier) {
     Column() {
         Box(modifier = Modifier
-            .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;  }){
+            .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;
+                resultsIntent.putExtra("score", totalScore.value)
+            }){
             if(showHint.value) {
                 Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
@@ -131,6 +137,12 @@ fun HintBox(hint: String, modifier: Modifier) {
         }
     }
 
+}
+
+@Composable
+fun ScoreCard(resultsIntent: Intent) {
+    Text(text = "Current Score    ", color= Color.White, fontSize = 20.sp,fontWeight = FontWeight.W700)
+    Text(text = totalScore.value.toString(), color= Color.White, fontSize = 20.sp,fontWeight = FontWeight.W700)
 }
 
 
@@ -200,15 +212,18 @@ fun SingleChoiceIconQuestion(
             .clickable {
 
                 selectOption = optionId
+                selectedAnswer.value = optionId
                 if (selectOption == correctOption) {
                     correctAnswerPlayer.start()
                     totalScore.value = totalScore.value + 10
+                    resultsIntent.putExtra("score", totalScore.value)
                     color.value = Brush.horizontalGradient(
                         listOf(
                             Color.Green,
                             Color.DarkGray,
                             Color.LightGray
-                        ))
+                        )
+                    )
                     Toast
                         .makeText(
                             context,
@@ -232,19 +247,26 @@ fun SingleChoiceIconQuestion(
                     context.startActivity(resultsIntent)
                     activity?.finish()
                     showQuestion.value = 0
+                    selectedAnswer.value = 0
 
                 }
 //                } else {
 //                    showQuestion.value = showQuestion.value+1; showHint.value = false }
                 else {
-                    showQuestion.value = showQuestion.value + 1;
-                    showHint.value = false
+                    Handler().postDelayed({
+                        showQuestion.value = showQuestion.value + 1;
+                        showHint.value = false
+                        selectedAnswer.value = 0
+                    }, 2000)
+
+
                 }
 
             }
 
 
-            .background( color.value,
+            .background(
+                color.value,
 //                Brush.horizontalGradient(
 //                    listOf(
 //                        Color(0xFFa54776),
@@ -272,7 +294,12 @@ fun SingleChoiceIconQuestion(
                 .clip(CircleShape),
         )
         Text(text = option, textAlign = TextAlign.Center, modifier = Modifier.padding(end = 150.dp), style=TextStyle(color= Color.White, fontSize = 18.sp, fontWeight = FontWeight.W700))
-
+        if (selectedAnswer.value == correctOption && selectedAnswer.value == optionId) {
+            Text(text = "Wohoo", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
+        }
+        if (selectedAnswer.value != correctOption && selectedAnswer.value == optionId) {
+            Text(text = "Mehh", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
+        }
     }
 
 
@@ -281,6 +308,7 @@ fun SingleChoiceIconQuestion(
 private val showQuestion = mutableStateOf(0)
 private val showHint = mutableStateOf(false)
 private val totalScore = mutableStateOf(0)
+private val selectedAnswer = mutableStateOf(0)
 
 data class Option(
     val id: Int,
@@ -331,12 +359,12 @@ private val quizQuestions = listOf(
         questionHint = "Piyush",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U010026KRK6-8e13318c2565-192",
         questionImageUrl = R.drawable.piyush,
-        answer = 2,
+        answer = 1,
         options = listOf(
             Option(
                 id = 1,
-                optionText = "Ozone",
-                optionImageUrl = R.drawable.ozone,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
             ),
             Option(
                 id = 2,
@@ -345,13 +373,13 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 3,
-                optionText = "Nucleus",
-                optionImageUrl = R.drawable.nucleus,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
             ),
             Option(
                 id = 4,
-                optionText = "Quantum",
-                optionImageUrl = R.drawable.quantum,
+                optionText = "Nucleus",
+                optionImageUrl = R.drawable.nucleus,
             ),
         )
     ),
@@ -364,8 +392,8 @@ private val quizQuestions = listOf(
         options = listOf(
             Option(
                 id = 1,
-                optionText = "Ozone",
-                optionImageUrl = R.drawable.ozone,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
             ),
             Option(
                 id = 2,
@@ -374,13 +402,13 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 3,
-                optionText = "Nucleus",
-                optionImageUrl = R.drawable.nucleus,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
             ),
             Option(
                 id = 4,
-                optionText = "Quantum",
-                optionImageUrl = R.drawable.quantum,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
             ),
         )
     ),
@@ -389,7 +417,7 @@ private val quizQuestions = listOf(
         questionHint = "Gunjit",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U0102MQ3X9C-3c019c024a3f-192",
         questionImageUrl = R.drawable.gunjit,
-        answer = 2,
+        answer = 4,
         options = listOf(
             Option(
                 id = 1,
@@ -408,8 +436,8 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 4,
-                optionText = "Quantum",
-                optionImageUrl = R.drawable.quantum,
+                optionText = "Sigma",
+                optionImageUrl = R.drawable.sigma,
             ),
         )
     ),
@@ -418,27 +446,27 @@ private val quizQuestions = listOf(
         questionHint = "Unnati",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-UVDV3AYJY-f78c2d308997-192",
         questionImageUrl = R.drawable.unnati,
-        answer = 2,
+        answer = 1,
         options = listOf(
             Option(
                 id = 1,
-                optionText = "Ozone",
-                optionImageUrl = R.drawable.ozone,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
             ),
             Option(
                 id = 2,
-                optionText = "Photon",
-                optionImageUrl = R.drawable.photonl,
-            ),
-            Option(
-                id = 3,
                 optionText = "Nucleus",
                 optionImageUrl = R.drawable.nucleus,
             ),
             Option(
-                id = 4,
+                id = 3,
                 optionText = "Quantum",
                 optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 4,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
             ),
         )
     ),
@@ -447,7 +475,7 @@ private val quizQuestions = listOf(
         questionHint = "Abhilash",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U02L9T65A8N-a1f617e965be-192",
         questionImageUrl = R.drawable.abhilash,
-        answer = 2,
+        answer = 3,
         options = listOf(
             Option(
                 id = 1,
@@ -461,8 +489,8 @@ private val quizQuestions = listOf(
             ),
             Option(
                 id = 3,
-                optionText = "Nucleus",
-                optionImageUrl = R.drawable.nucleus,
+                optionText = "Delta",
+                optionImageUrl = R.drawable.delta,
             ),
             Option(
                 id = 4,
