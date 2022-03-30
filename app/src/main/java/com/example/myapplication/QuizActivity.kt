@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.Collections.shuffle
 
+
 class QuizActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,7 @@ class QuizActivity : ComponentActivity() {
         for (i in quizQuestions.take(5)) {
             questionsToShow.add(i);
         }
+
         setContent {
 
 
@@ -188,6 +191,8 @@ fun SingleChoiceIconQuestion(
             Color(0xFFc468da)
         )
     ))
+    val correctAnswerPlayer = MediaPlayer.create(context, R.raw.correctanswer)
+    val wrongAnswerPlayer = MediaPlayer.create(context, R.raw.wronganswer)
 
     Row(
         modifier = Modifier
@@ -196,7 +201,7 @@ fun SingleChoiceIconQuestion(
 
                 selectOption = optionId
                 if (selectOption == correctOption) {
-
+                    correctAnswerPlayer.start()
                     totalScore.value = totalScore.value + 10
                     color.value = Brush.horizontalGradient(
                         listOf(
@@ -212,6 +217,7 @@ fun SingleChoiceIconQuestion(
                         )
                         .show();
                 } else {
+                    wrongAnswerPlayer.start()
                     Toast
                         .makeText(
                             context,
