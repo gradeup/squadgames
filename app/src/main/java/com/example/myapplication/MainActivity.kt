@@ -18,6 +18,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.KeyboardType
+
 
 
 
@@ -31,6 +38,8 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(value="")
             }
             val scope= rememberCoroutineScope()
+
+            val focusManager = LocalFocusManager.current
 
                 // A surface container using the 'background' color from the theme
 
@@ -55,6 +64,9 @@ class MainActivity : ComponentActivity() {
                             onValueChange = {
                                 textFieldState= it
                             },
+
+                            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password),
                             singleLine = true,
                             modifier = Modifier
                                 .height(50.dp)
