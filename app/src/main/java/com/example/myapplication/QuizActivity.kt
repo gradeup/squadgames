@@ -199,7 +199,6 @@ fun SingleChoiceIconQuestion(
     val activity = (LocalContext.current as? Activity)
     val correctAnswerPlayer = MediaPlayer.create(context, R.raw.correctanswer)
     val wrongAnswerPlayer = MediaPlayer.create(context, R.raw.wronganswer)
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -750,7 +749,7 @@ private val quizQuestions = listOf(
         )
     ),
     Question(
-        id = 3,
+        id = 16,
         questionHint = "Sharad",
         questionImageUrl = R.drawable.sharad,
         answer = 2,
