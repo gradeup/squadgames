@@ -207,12 +207,10 @@ fun SingleChoiceIconQuestion(
     ))
     val correctAnswerPlayer = MediaPlayer.create(context, R.raw.correctanswer)
     val wrongAnswerPlayer = MediaPlayer.create(context, R.raw.wronganswer)
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-
                 selectOption = optionId
                 selectedAnswer.value = optionId
                 if (selectOption == correctOption) {
@@ -265,8 +263,6 @@ fun SingleChoiceIconQuestion(
                 }
 
             }
-
-
             .background(
                 color.value,
 //                Brush.horizontalGradient(
@@ -283,7 +279,6 @@ fun SingleChoiceIconQuestion(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Image(
             painter = painter,
             contentDescription = null,
@@ -303,7 +298,6 @@ fun SingleChoiceIconQuestion(
             Text(text = "Mehh", color=Color.White, fontWeight = FontWeight.W500, modifier = Modifier.padding(end=15.dp))
         }
     }
-
 
 }
 
