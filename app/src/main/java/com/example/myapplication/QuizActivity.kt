@@ -34,9 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.util.*
 import java.util.Collections.shuffle
-import kotlin.collections.ArrayList
 
 
 class QuizActivity : ComponentActivity() {
@@ -84,6 +82,7 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
         }
         HintBox(
             ques.questionHint,
+            resultsIntent,
             modifier = Modifier
                 .height(200.dp)
                 .width(200.dp)
@@ -115,7 +114,7 @@ fun Submit(i: Intent) {
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun HintBox(hint: String, modifier: Modifier) {
+fun HintBox(hint: String,resultsIntent: Intent, modifier: Modifier) {
     Column() {
         Box(modifier = Modifier
             .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;
