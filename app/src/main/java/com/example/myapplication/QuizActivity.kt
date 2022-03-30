@@ -258,7 +258,7 @@ private val quizQuestions = listOf(
         id = 1,
         questionHint = "Prashant",
         //questionImageUrl =  "https://ca.slack-edge.com/T029Z234S-U0100FH3KA4-31f759f82b38-192",
-        questionImageUrl = R.drawable.ozone,
+        questionImageUrl = R.drawable.pc,
         answer = 2,
         options = listOf(
             Option(
@@ -287,7 +287,7 @@ private val quizQuestions = listOf(
         id = 2,
         questionHint = "Piyush",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U010026KRK6-8e13318c2565-192",
-        questionImageUrl = R.drawable.photonl,
+        questionImageUrl = R.drawable.piyush,
         answer = 2,
         options = listOf(
             Option(
@@ -316,7 +316,7 @@ private val quizQuestions = listOf(
         id = 3,
         questionHint = "Faheem",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U3F1490EP-0df8620cc5d9-192",
-        questionImageUrl = R.drawable.quantum,
+        questionImageUrl = R.drawable.faheem,
         answer = 2,
         options = listOf(
             Option(
@@ -345,7 +345,7 @@ private val quizQuestions = listOf(
         id = 4,
         questionHint = "Gunjit",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U0102MQ3X9C-3c019c024a3f-192",
-        questionImageUrl = R.drawable.electron,
+        questionImageUrl = R.drawable.gunjit,
         answer = 2,
         options = listOf(
             Option(
@@ -374,7 +374,7 @@ private val quizQuestions = listOf(
         id = 5,
         questionHint = "Unnati",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-UVDV3AYJY-f78c2d308997-192",
-        questionImageUrl = R.drawable.qubit,
+        questionImageUrl = R.drawable.unnati,
         answer = 2,
         options = listOf(
             Option(
@@ -401,9 +401,9 @@ private val quizQuestions = listOf(
     ),
     Question(
         id = 6,
-        questionHint = "Manish",
+        questionHint = "Abhilash",
         //questionImageUrl = "https://ca.slack-edge.com/T029Z234S-U02L9T65A8N-a1f617e965be-192",
-        questionImageUrl = R.drawable.sigma,
+        questionImageUrl = R.drawable.abhilash,
         answer = 2,
         options = listOf(
             Option(
