@@ -1,55 +1,38 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.contentColorFor
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.myapplication.ui.theme.MyApplicationTheme
-import java.util.Collections.shuffle
-import android.annotation.SuppressLint
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.foundation.Image
-import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
-import android.widget.RadioButton
-import android.widget.Toast
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.RadioButton
-import androidx.compose.runtime.*
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import kotlin.random.Random
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import java.util.Collections.shuffle
 
 class QuizActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +46,6 @@ class QuizActivity : ComponentActivity() {
         }
         setContent {
 
-            resultsIntent.putExtra("score", 4)
 
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -72,6 +54,8 @@ class QuizActivity : ComponentActivity() {
                 .fillMaxSize(1f)) {
                 Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
                 QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
+                Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "${totalScore.value}")
+                resultsIntent.putExtra("score", totalScore.value)
         }
     }
 }
@@ -127,7 +111,7 @@ fun Submit(i: Intent) {
 fun HintBox(hint: String, modifier: Modifier) {
     Column() {
         Box(modifier = Modifier
-            .clickable { showHint.value = !showHint.value;  }){
+            .clickable { showHint.value = !showHint.value; totalScore.value = totalScore.value - 5;  }){
             if(showHint.value) {
                 Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
@@ -204,6 +188,7 @@ fun SingleChoiceIconQuestion(
 
                 selectOption = optionId
                 if (selectOption == correctOption) {
+                    totalScore.value = totalScore.value + 10
                     Toast
                         .makeText(
                             context,
@@ -273,6 +258,7 @@ fun SingleChoiceIconQuestion(
 
 private val showQuestion = mutableStateOf(0)
 private val showHint = mutableStateOf(false)
+private val totalScore = mutableStateOf(0)
 
 data class Option(
     val id: Int,
