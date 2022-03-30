@@ -72,6 +72,9 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
         val description = "Android logo"
         val title = "Android"
         val correctOption = ques.answer
+        if (showQuestion.value == 0) {
+            totalScore.value = 0
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
