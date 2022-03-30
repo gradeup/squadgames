@@ -41,11 +41,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.RadioButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import kotlin.random.Random
 
 class QuizActivity : ComponentActivity() {
@@ -63,7 +66,9 @@ class QuizActivity : ComponentActivity() {
 
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-            modifier = Modifier.background(Color(0xFF353a65)).fillMaxSize(1f)) {
+            modifier = Modifier
+                .background(Color(0xFF353a65))
+                .fillMaxSize(1f)) {
                 Text(modifier = Modifier.padding(10.dp), color=Color.White, fontSize = 22.sp,fontWeight = FontWeight.W900, text = "Guess the squad")
                 QuestionRender(questionsToShow[showQuestion.value], questionsToShow.size, resultsIntent) }
         }
@@ -148,13 +153,17 @@ fun HintBox(hint: String, modifier: Modifier) {
     Column() {
         Box(modifier = Modifier
             .clickable { showHint.value = !showHint.value }){
-            if(!showHint.value) {
-                Text(text = "Show Hint", modifier = Modifier
+            if(showHint.value) {
+                Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
-                    .padding(bottom = 20.dp))
+                    .padding(top = 25.dp)
+                    .width(190.dp)
+                    .background(Color.Magenta))
             }
-            Text(text = "Hint",color=Color.White, fontSize = 16.sp, fontWeight = FontWeight.W400, modifier = Modifier
+            Spacer(modifier = Modifier.height(10.dp).background(Color(0xFF353a65)))
+            Text(text = "Hint",color=Color.White,textAlign = TextAlign.Center, fontSize = 17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                 .align(alignment = Alignment.Center)
+                .width(200.dp)
                 .padding(bottom = 20.dp)
                 .padding(5.dp)
                 .background(Color.Magenta)
@@ -181,7 +190,7 @@ fun ImageCard(
     ) {
         Box(modifier = Modifier.height(200.dp)) {
             Image(painter = painter, contentDescription = contentDescription, contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(1f))
+                modifier = Modifier.fillMaxWidth(1f).clip(CircleShape))
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -206,7 +215,13 @@ fun SingleChoiceIconQuestion(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Red)
+            .background(Brush.horizontalGradient(listOf(
+                Color(0xFFa54776),
+                Color(0xFFd45dad),
+                Color(0xFFc468da)
+            )),
+            RoundedCornerShape(50.dp))
+//
             .clickable {
                 Toast
                     .makeText(
@@ -226,8 +241,7 @@ fun SingleChoiceIconQuestion(
             contentDescription = null,
             modifier = Modifier
                 .width(56.dp)
-                .height(56.dp)
-
+                .height(56.dp),
         )
         Text(text = option, style=TextStyle(color= Color.White, fontSize = 16.sp))
 
