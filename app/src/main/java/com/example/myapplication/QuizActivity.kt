@@ -95,6 +95,17 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
 fun HintBox(hint: String,) {
     Column() {
         Box(modifier = Modifier
+            .height(30.dp)
+            .background(
+                Brush.horizontalGradient(
+                    listOf(
+                        Color(0xFFa54776),
+                        Color(0xFFd45dad),
+                        Color(0xFFc468da)
+                    )
+                ),
+             shape = CircleShape,
+            )
                 .clickable { showHint.value = !showHint.value
                     if(showHint.value) {
                         totalScore.value = totalScore.value - 5
@@ -118,7 +129,6 @@ fun HintBox(hint: String,) {
                         .align(alignment = Alignment.Center)
                         .width(190.dp))
                 }
-
             }
         }
 
@@ -376,6 +386,34 @@ private val quizQuestions = listOf(
         )
     ),
     Question(
+        id = 3,
+        questionHint = "Faheem",
+        questionImageUrl = R.drawable.faheem,
+        answer = 2,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Photon",
+                optionImageUrl = R.drawable.photonl,
+            ),
+            Option(
+                id = 3,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
         id = 4,
         questionHint = "Gunjit",
         questionImageUrl = R.drawable.gunjit,
@@ -456,6 +494,286 @@ private val quizQuestions = listOf(
                 id = 4,
                 optionText = "Quantum",
                 optionImageUrl = R.drawable.quantum,
+            ),
+        )
+    ),
+    Question(
+        id = 7,
+        questionHint = "Radhika",
+        questionImageUrl = R.drawable.radhika,
+        answer = 3,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Delta",
+                optionImageUrl = R.drawable.delta,
+            ),
+            Option(
+                id = 2,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
+            ),
+            Option(
+                id = 3,
+                optionText = "Momentum",
+                optionImageUrl = R.drawable.momentum,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
+        id = 8,
+        questionHint = "Aditee",
+        questionImageUrl = R.drawable.aditee,
+        answer = 1,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Photon",
+                optionImageUrl = R.drawable.photonl,
+            ),
+            Option(
+                id = 3,
+                optionText = "Sigma",
+                optionImageUrl = R.drawable.sigma,
+            ),
+            Option(
+                id = 4,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+        )
+    ),
+    Question(
+        id = 9,
+        questionHint = "Tripati",
+        questionImageUrl = R.drawable.tripati,
+        answer = 4,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Photon",
+                optionImageUrl = R.drawable.photonl,
+            ),
+            Option(
+                id = 3,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
+        id = 10,
+        questionHint = "Kunal",
+        questionImageUrl = R.drawable.kunal,
+        answer = 2,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
+            ),
+            Option(
+                id = 2,
+                optionText = "Photon",
+                optionImageUrl = R.drawable.photonl,
+            ),
+            Option(
+                id = 3,
+                optionText = "Nucleus",
+                optionImageUrl = R.drawable.nucleus,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
+        id = 11,
+        questionHint = "Anjana",
+        questionImageUrl = R.drawable.anjana,
+        answer = 1,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
+            ),
+            Option(
+                id = 2,
+                optionText = "Nucleus",
+                optionImageUrl = R.drawable.nucleus,
+            ),
+            Option(
+                id = 3,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+            Option(
+                id = 4,
+                optionText = "Momentum",
+                optionImageUrl = R.drawable.momentum,
+            ),
+        )
+    ),
+    Question(
+        id = 12,
+        questionHint = "Shivani",
+        questionImageUrl = R.drawable.shivani,
+        answer = 4,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Momentum",
+                optionImageUrl = R.drawable.momentum,
+            ),
+            Option(
+                id = 3,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+            Option(
+                id = 4,
+                optionText = "Sigma",
+                optionImageUrl = R.drawable.sigma,
+            ),
+        )
+    ),
+    Question(
+        id = 13,
+        questionHint = "Tushar",
+        questionImageUrl = R.drawable.tushar,
+        answer = 2,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Momentum",
+                optionImageUrl = R.drawable.momentum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Sigma",
+                optionImageUrl = R.drawable.sigma,
+            ),
+            Option(
+                id = 3,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
+        id = 14,
+        questionHint = "Sanchit",
+        questionImageUrl = R.drawable.sanchit,
+        answer = 3,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Photon",
+                optionImageUrl = R.drawable.photonl,
+            ),
+            Option(
+                id = 3,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
+        id = 15,
+        questionHint = "Nishant Yadav",
+        questionImageUrl = R.drawable.nishantyadav,
+        answer = 2,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Momentum",
+                optionImageUrl = R.drawable.momentum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 3,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
+            ),
+        )
+    ),
+    Question(
+        id = 3,
+        questionHint = "Sharad",
+        questionImageUrl = R.drawable.sharad,
+        answer = 2,
+        options = listOf(
+            Option(
+                id = 1,
+                optionText = "Quantum",
+                optionImageUrl = R.drawable.quantum,
+            ),
+            Option(
+                id = 2,
+                optionText = "Qubit",
+                optionImageUrl = R.drawable.qubit,
+            ),
+            Option(
+                id = 3,
+                optionText = "Electron",
+                optionImageUrl = R.drawable.electron,
+            ),
+            Option(
+                id = 4,
+                optionText = "Ozone",
+                optionImageUrl = R.drawable.ozone,
             ),
         )
     ),
