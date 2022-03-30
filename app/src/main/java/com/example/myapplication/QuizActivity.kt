@@ -58,10 +58,11 @@ class QuizActivity : ComponentActivity() {
         var questionsList = quizQuestions.toMutableList()
         shuffle(quizQuestions)
         var questionsToShow = ArrayList<Question>()
-        for (i in quizQuestions.take(4)) {
+        for (i in quizQuestions.take(5)) {
             questionsToShow.add(i);
         }
         setContent {
+
             resultsIntent.putExtra("score", 4)
 
             Column(horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,8 +80,6 @@ class QuizActivity : ComponentActivity() {
 fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) {
     Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-        val context = LocalContext.current
-        val activity = (LocalContext.current as? Activity)
         val painter = painterResource(id = ques.questionImageUrl)
         val description = "Android logo"
         val title = "Android"
@@ -107,34 +106,9 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id)
+                SingleChoiceIconQuestion(painter = optionPainter, option = i.optionText, correctOption = correctOption, optionId=i.id, resultsIntent = resultsIntent, questionsLength = questionsLength)
             }
         }
-        if (showQuestion.value >= questionsLength-1) {
-//        options.forEach {
-//            val optionText = options[x++];
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(16.dp)
-//            ) {
-//                SingleChoiceIconQuestion(painter = optionPainter, option = optionText)
-//            }
-//        }
-
-            Button(onClick = {
-                context.startActivity(resultsIntent)
-                activity?.finish()
-                showQuestion.value = 0
-            }) {
-                Text(text = "Submit")
-            }
-        } else {
-            Button(onClick = { showQuestion.value = showQuestion.value+1; showHint.value = false }) {
-                Text(text = "Next")
-            }
-        }
-
     }
 }
 
@@ -153,7 +127,7 @@ fun Submit(i: Intent) {
 fun HintBox(hint: String, modifier: Modifier) {
     Column() {
         Box(modifier = Modifier
-            .clickable { showHint.value = !showHint.value }){
+            .clickable { showHint.value = !showHint.value;  }){
             if(showHint.value) {
                 Text(text = hint,color=Color.White, textAlign = TextAlign.Center, fontSize=17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
@@ -161,16 +135,17 @@ fun HintBox(hint: String, modifier: Modifier) {
             } else {
                 Text(text = "Hint",color=Color.White,textAlign = TextAlign.Center, fontSize = 17.sp, fontWeight = FontWeight.W500, modifier = Modifier
                     .align(alignment = Alignment.Center)
-                    .width(200.dp)
-                    .padding(bottom = 20.dp)
-                    .padding(5.dp)
-                    .padding(start = 5.dp, end = 5.dp))
+                    .width(190.dp))
+//                    .padding(bottom = 20.dp)
+//                    .padding(5.dp)
+//                    .padding(start = 5.dp, end = 5.dp))
             }
 
         }
     }
 
 }
+
 
 @Composable
 fun ImageCard(
@@ -189,7 +164,9 @@ fun ImageCard(
         Box(modifier = Modifier.height(200.dp)) {
             Image(painter = painter, contentDescription = contentDescription,
                  contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth(1f).background(color = Color.White, shape = CircleShape))
+                modifier = Modifier
+                    .fillMaxWidth(1f)
+                    .background(color = Color.White, shape = CircleShape))
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -211,23 +188,22 @@ fun SingleChoiceIconQuestion(
     option: String,
     optionId: Int,
     correctOption: Int,
+    resultsIntent: Intent,
+    questionsLength: Int,
 ) {
     val context = LocalContext.current
     var selectOption = 0
+    var disableoption = true
+    val activity = (LocalContext.current as? Activity)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Brush.horizontalGradient(listOf(
-                Color(0xFFa54776),
-                Color(0xFFd45dad),
-                Color(0xFFc468da)
-            )),
-            RoundedCornerShape(50.dp))
-//
+//            .height(70.dp)
             .clickable {
 
                 selectOption = optionId
-                if(selectOption == correctOption){
+                if (selectOption == correctOption) {
                     Toast
                         .makeText(
                             context,
@@ -244,10 +220,38 @@ fun SingleChoiceIconQuestion(
                         )
                         .show();
                 }
+                if (showQuestion.value >= questionsLength - 1) {
+
+
+                    context.startActivity(resultsIntent)
+                    activity?.finish()
+                    showQuestion.value = 0
+
+                }
+//                } else {
+//                    showQuestion.value = showQuestion.value+1; showHint.value = false }
+                else {
+                    showQuestion.value = showQuestion.value + 1;
+                    showHint.value = false
+                }
+
             }
+
+
+            .background(
+                Brush.horizontalGradient(
+                    listOf(
+                        Color(0xFFa54776),
+                        Color(0xFFd45dad),
+                        Color(0xFFc468da)
+                    )
+                ),
+
+                RoundedCornerShape(50.dp)
+            )
             .padding(vertical = 16.dp, horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
         Image(
@@ -256,10 +260,11 @@ fun SingleChoiceIconQuestion(
             modifier = Modifier
                 .width(56.dp)
                 .height(56.dp)
+                //.fillMaxHeight(1f)
                 .background(color = Color.Transparent, shape = CircleShape)
                 .clip(CircleShape),
         )
-        Text(text = option, style=TextStyle(color= Color.White, fontSize = 16.sp))
+        Text(text = option, textAlign = TextAlign.Center, modifier = Modifier.padding(end = 150.dp), style=TextStyle(color= Color.White, fontSize = 16.sp))
 
     }
 
