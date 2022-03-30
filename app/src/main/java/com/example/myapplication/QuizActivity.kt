@@ -104,10 +104,12 @@ fun QuestionRender(ques: Question, questionsLength: Int, resultsIntent: Intent) 
                 SingleChoiceIconQuestion(painter = optionPainter, option = optionText)
             }
         }
-        if (showQuestion.value >= questionsLength) {
+        if (showQuestion.value >= questionsLength-1) {
             Button(onClick = {
-                context.startActivity(resultsIntent) }) {
+                context.startActivity(resultsIntent)
                 activity?.finish()
+                showQuestion.value = 0
+            }) {
                 Text(text = "Submit")
             }
         } else {
