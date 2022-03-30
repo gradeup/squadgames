@@ -191,7 +191,7 @@ fun SingleChoiceIconQuestion(
             Color(0xFFc468da)
         )
     ))
-    val correctAnswerPlayer = MediaPlayer.create(context, R.raw.correctanswer)
+    val correctAnswerPlayer = MediaPlayer.create(context, R.raw.rightanswer)
     val wrongAnswerPlayer = MediaPlayer.create(context, R.raw.wronganswer)
 
     Row(
