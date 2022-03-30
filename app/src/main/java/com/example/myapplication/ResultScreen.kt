@@ -10,18 +10,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.airbnb.lottie.compose.*
 
 class ResultScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,9 @@ class ResultScreen : ComponentActivity() {
                         .background(Color.White, shape = CircleShape)
                         .height(200.dp)
                         .width(200.dp)
-                    )
+                    ){
+                        Loader("lottie/trophy.json")
+                    }
                     Spacer(modifier = Modifier.height(40.dp))
                     Box(modifier = Modifier
                         .background(
@@ -70,8 +71,28 @@ class ResultScreen : ComponentActivity() {
                             fontSize = 25.sp,
                         )
                     }
+
                 }
             }
         }
     }
 }
+
+@Composable
+private fun Loader(my_file:String){
+    val compositionResult: LottieCompositionResult =
+        rememberLottieComposition(LottieCompositionSpec.Asset(my_file))
+    val progress by animateLottieCompositionAsState(
+        compositionResult.value,
+        isPlaying = true,
+        iterations = LottieConstants.IterateForever,
+        speed = 1.0f
+    )
+    LottieAnimation(compositionResult.value,progress,
+        modifier = Modifier
+            .height(300.dp)
+            .width(270.dp)
+    )
+}
+
+
